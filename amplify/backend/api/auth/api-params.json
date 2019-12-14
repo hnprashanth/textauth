@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/auth",
+            "lambdaFunction": "auth",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "auth",
+    "apiName": "auth",
+    "functionArns": [
+        {
+            "lambdaFunction": "auth"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-textauth-dev-212925-authRole",
+        "unAuthRoleName": "amplify-textauth-dev-212925-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "auth",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "eea4929c"
+}

@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "storage": {
+            "users": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}

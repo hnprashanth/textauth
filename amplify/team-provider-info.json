@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-textauth-dev-212925-authRole",
+            "UnauthRoleArn": "arn:aws:iam::701528175564:role/amplify-textauth-dev-212925-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::701528175564:role/amplify-textauth-dev-212925-authRole",
+            "Region": "ap-south-1",
+            "DeploymentBucketName": "amplify-textauth-dev-212925-deployment",
+            "UnauthRoleName": "amplify-textauth-dev-212925-unauthRole",
+            "StackName": "amplify-textauth-dev-212925",
+            "StackId": "arn:aws:cloudformation:ap-south-1:701528175564:stack/amplify-textauth-dev-212925/b565a8c0-1e8a-11ea-aa70-027843ee7a02",
+            "AmplifyAppId": "d2baosp5q94zww"
+        }
+    }
+}
