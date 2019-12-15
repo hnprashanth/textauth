@@ -37,10 +37,8 @@ app.use(function (req, res, next) {
   next()
 });
 
-/****************************
-* Example post method *
-****************************/
-
+//create user & generate otp
+//todo: check if user already present
 app.post('/auth', async function (req, res) {
   // Add your code here
   const otp = Math.floor(100000 + Math.random() * 900000)
@@ -50,8 +48,10 @@ app.post('/auth', async function (req, res) {
     Item: item
   }
   await putItem(putItemParams)
+  //send text function call here
 });
 
+//verify if OTP sent is correct, if correct issue token
 app.post('/auth/verify', async function (req, res) {
   // Add your code here
   console.log(req.body)
