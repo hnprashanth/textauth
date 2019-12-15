@@ -77,7 +77,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-textauth-dev-212925-deployment",
-					"S3Key": "amplify-builds/auth-5651765a4a66377a6c47-build.zip"
+					"S3Key": "amplify-builds/auth-76544a62586149354969-build.zip"
 				}
 			}
 		},

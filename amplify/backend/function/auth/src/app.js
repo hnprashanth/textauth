@@ -19,6 +19,7 @@ Amplify Params - DO NOT EDIT */
 const AWS = require('aws-sdk')
 AWS.config.update({ region: 'ap-south-1' });
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+var jwt = require('jsonwebtoken');
 
 var express = require('express')
 var bodyParser = require('body-parser')
@@ -83,8 +84,9 @@ app.post('/auth/verify', async function (req, res) {
 
   const user = await getItem(getItemParams)
   console.log(user)
-  if (user.otp === parseInt(req.body.otp)) {
-    res.json({ success: 'Valid OTP' })
+  if (user.otp === req.body.otp) {
+    var token = jwt.sign(user, 'shhhhh');
+    res.json({ token })
   } else {
     res.json({ success: 'Invalid OTP' })
   }
