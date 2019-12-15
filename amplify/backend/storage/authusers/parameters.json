@@ -1,0 +1,5 @@
+{
+    "tableName": "authusers",
+    "partitionKeyName": "phone",
+    "partitionKeyType": "S"
+}
