@@ -37,21 +37,6 @@ app.use(function (req, res, next) {
   next()
 });
 
-
-/**********************
- * Example get method *
- **********************/
-
-app.get('/auth', function (req, res) {
-  // Add your code here
-  res.json({ success: 'get call succeed!', url: req.url });
-});
-
-app.get('/auth/*', function (req, res) {
-  // Add your code here
-  res.json({ success: 'get call succeed!', url: req.url });
-});
-
 /****************************
 * Example post method *
 ****************************/
@@ -64,14 +49,7 @@ app.post('/auth', async function (req, res) {
     TableName: 'authusers-dev',
     Item: item
   }
-  await dynamodb.put(putItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body });
-    } else {
-      res.json({ success: 'put call succeed!', url: req.url, data: data })
-    }
-  });
+  await putItem(putItemParams)
 });
 
 app.post('/auth/verify', async function (req, res) {
@@ -86,43 +64,30 @@ app.post('/auth/verify', async function (req, res) {
   console.log(user)
   if (user.otp === req.body.otp) {
     var token = jwt.sign(user, 'shhhhh');
+    await invalidateOtp(user.phone)
     res.json({ token })
   } else {
     res.json({ success: 'Invalid OTP' })
   }
 });
 
-/****************************
-* Example put method *
-****************************/
+function invalidateOtp(phone) {
+  return promise = new Promise(async (resolve, reject) => {
+    const params = {
+      TableName: "authusers-dev",
+      Key: {
+        "phone": phone,
+      },
+      UpdateExpression: "set otp = :otp",
+      ExpressionAttributeValues: {
+        ":otp": 0,
+      },
+      ReturnValues: "UPDATED_NEW"
+    };
+    await updateItem(params).then(() => resolve())
+  })
 
-app.put('/auth', function (req, res) {
-  // Add your code here
-  res.json({ success: 'put call succeed!', url: req.url, body: req.body })
-});
-
-app.put('/auth/*', function (req, res) {
-  // Add your code here
-  res.json({ success: 'put call succeed!', url: req.url, body: req.body })
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/auth', function (req, res) {
-  // Add your code here
-  res.json({ success: 'delete call succeed!', url: req.url });
-});
-
-app.delete('/auth/*', function (req, res) {
-  // Add your code here
-  res.json({ success: 'delete call succeed!', url: req.url });
-});
-
-app.listen(3000, function () {
-  console.log("App started")
-});
+}
 
 //get a single item from dynamoDB
 function getItem(params) {
@@ -142,6 +107,38 @@ function getItem(params) {
   return promise;
 }
 
+//put a single item into dynamoDB
+function putItem(params) {
+  let promise = new Promise(function (resolve, reject) {
+    dynamodb.put(params, error => {
+      if (error) {
+        console.log(error);
+        reject(error);
+      }
+      resolve({ status: "success" });
+    });
+  });
+  return promise;
+}
+
+//Update item in dynamoDB
+function updateItem(params) {
+  let promise = new Promise(function (resolve, reject) {
+    dynamodb.update(params, function (error, data) {
+      if (error) {
+        console.error(
+          "Unable to update item. Error JSON:",
+          JSON.stringify(error, null, 2)
+        );
+        reject(error);
+      } else {
+        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+        resolve(data);
+      }
+    });
+  });
+  return promise;
+}
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
